@@ -66,16 +66,12 @@ espnet/
 
 - **`espnet2/optimizers/galore_adamw.py`**  
   Implements GaLore and CGaLore with AdamW. CGaLore uses KFAC curvature factors to construct the projection subspace. The implementation supports the projection variants used in the paper and periodically refreshes the low-rank basis.
-
 - **`espnet2/optimizers/named_optimizer.py`**  
   Defines a lightweight optimizer interface indicating that an optimizer requires named parameters. This is needed because CGaLore associates each trainable weight matrix with its corresponding stored KFAC factors.
-
 - **`espnet2/bin/s2t_consolidate.py`**  
   Entry point used to compute the curvature statistics required by CGaLore before adapting to a new task.
-
 - **`espnet2/legacy/nets/pytorch_backend/consolidate3.py`**  
   Computes and stores the Kronecker-factored curvature statistics used by CGaLore. For each selected linear layer, it accumulates the input covariance and output-gradient covariance factors.
-
 - **`espnet2/legacy/nets/pytorch_backend/continual_learning3.py`**  
   Contains the continual-learning utility used by the configurations, `FineTuningLinear`, which selects the parameters (weight matrices of `torch.nn.Linear` modules) that remain trainable during adaptation.
 
@@ -83,10 +79,8 @@ espnet/
 
 - **`espnet2/tasks/abs_task.py`**  
   Registers `GaLoreAdamW` as an ESPnet optimizer and adds support for optimizers that require `model.named_parameters()` rather than only `model.parameters()`.
-
 - **`espnet2/tasks/s2t.py`**  
   Registers and constructs `FineTuningLinear` and passes the resulting continual-learning object to the S2T model.
-
 - **`espnet2/s2t/espnet_model.py`**  
   Kept identical to the standard ESPnet implementation except for the minimal support needed to pass and store the continual-learning object in the model.
 
@@ -96,14 +90,9 @@ All remaining ESPnet functionality is taken from the standard ESPnet codebase.
 
 The baseline implementations are available in the repositories accompanying the corresponding earlier work:
 
-- **PECL baselines (LoRA, BiLoRA, SSVD/CSSVD):**  
-  https://github.com/StevenVdEeckt/pecl-for-asr
-
-- **SVR:**  
-  https://github.com/StevenVdEeckt/efficient-rehearsal-for-cl-in-asr
-
-- **IHR:**  
-  https://github.com/StevenVdEeckt/inverse-hessian-regularization
+- **PECL baselines (LoRA, BiLoRA, CSSVD):**  https://github.com/StevenVdEeckt/pecl-for-asr
+- **SVR:**  https://github.com/StevenVdEeckt/efficient-rehearsal-for-cl-in-asr
+- **IHR:**  https://github.com/StevenVdEeckt/inverse-hessian-regularization
 
 The configuration files used for these baselines are nevertheless included in this repository so that the experimental settings reported in the CGaLore paper are explicit.
 
