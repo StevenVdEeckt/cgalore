@@ -77,7 +77,7 @@ espnet/
   Computes and stores the Kronecker-factored curvature statistics used by CGaLore. For each selected linear layer, it accumulates the input covariance and output-gradient covariance factors.
 
 - **`espnet2/legacy/nets/pytorch_backend/continual_learning3.py`**  
-  Contains the continual-learning utility used by the configurations, `FineTuningLinear`, which selects the parameters (weight matrices of torch.nn.Linear modules) that remain trainable during adaptation.
+  Contains the continual-learning utility used by the configurations, `FineTuningLinear`, which selects the parameters (weight matrices of `torch.nn.Linear` modules) that remain trainable during adaptation.
 
 ### Minimally modified ESPnet files
 
