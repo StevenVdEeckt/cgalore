@@ -167,3 +167,7 @@ where:
 - `list_of_speakers.txt` lists the speakers represented in the split.
 
 The experiment directories also contain the memory-set definitions used by rehearsal-based baselines where applicable.
+
+## Results
+
+All reported adaptation results are based on single training runs. The utterance-level significance tests assess differences in recognition errors, but do not capture variability across independent training runs.
