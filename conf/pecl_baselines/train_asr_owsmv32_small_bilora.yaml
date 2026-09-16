@@ -1,0 +1,229 @@
+freeze_param: 
+- encoder.embed.conv
+- encoder.encoders.0.cgmlp.csgu
+- encoder.encoders.0.norm_ff
+- encoder.encoders.0.norm_mha
+- encoder.encoders.0.norm_mlp
+- encoder.encoders.0.norm_final
+- encoder.encoders.0.norm_ff_macaron
+- encoder.encoders.0.depthwise_conv_fusion
+- encoder.encoders.1.cgmlp.csgu
+- encoder.encoders.1.norm_ff
+- encoder.encoders.1.norm_mha
+- encoder.encoders.1.norm_mlp
+- encoder.encoders.1.norm_final
+- encoder.encoders.1.norm_ff_macaron
+- encoder.encoders.1.depthwise_conv_fusion
+- encoder.encoders.2.cgmlp.csgu
+- encoder.encoders.2.norm_ff
+- encoder.encoders.2.norm_mha
+- encoder.encoders.2.norm_mlp
+- encoder.encoders.2.norm_final
+- encoder.encoders.2.norm_ff_macaron
+- encoder.encoders.2.depthwise_conv_fusion
+- encoder.encoders.3.cgmlp.csgu
+- encoder.encoders.3.norm_ff
+- encoder.encoders.3.norm_mha
+- encoder.encoders.3.norm_mlp
+- encoder.encoders.3.norm_final
+- encoder.encoders.3.norm_ff_macaron
+- encoder.encoders.3.depthwise_conv_fusion
+- encoder.encoders.4.cgmlp.csgu
+- encoder.encoders.4.norm_ff
+- encoder.encoders.4.norm_mha
+- encoder.encoders.4.norm_mlp
+- encoder.encoders.4.norm_final
+- encoder.encoders.4.norm_ff_macaron
+- encoder.encoders.4.depthwise_conv_fusion
+- encoder.encoders.5.cgmlp.csgu
+- encoder.encoders.5.norm_ff
+- encoder.encoders.5.norm_mha
+- encoder.encoders.5.norm_mlp
+- encoder.encoders.5.norm_final
+- encoder.encoders.5.norm_ff_macaron
+- encoder.encoders.5.depthwise_conv_fusion
+- encoder.encoders.6.cgmlp.csgu
+- encoder.encoders.6.norm_ff
+- encoder.encoders.6.norm_mha
+- encoder.encoders.6.norm_mlp
+- encoder.encoders.6.norm_final
+- encoder.encoders.6.norm_ff_macaron
+- encoder.encoders.6.depthwise_conv_fusion
+- encoder.encoders.7.cgmlp.csgu
+- encoder.encoders.7.norm_ff
+- encoder.encoders.7.norm_mha
+- encoder.encoders.7.norm_mlp
+- encoder.encoders.7.norm_final
+- encoder.encoders.7.norm_ff_macaron
+- encoder.encoders.7.depthwise_conv_fusion
+- encoder.encoders.8.cgmlp.csgu
+- encoder.encoders.8.norm_ff
+- encoder.encoders.8.norm_mha
+- encoder.encoders.8.norm_mlp
+- encoder.encoders.8.norm_final
+- encoder.encoders.8.norm_ff_macaron
+- encoder.encoders.8.depthwise_conv_fusion
+- encoder.after_norm
+- decoder.embed
+- decoder.after_norm
+- decoder.decoders.0.norm1
+- decoder.decoders.0.norm2
+- decoder.decoders.0.norm3
+- decoder.decoders.1.norm1
+- decoder.decoders.1.norm2
+- decoder.decoders.1.norm3
+- decoder.decoders.2.norm1
+- decoder.decoders.2.norm2
+- decoder.decoders.2.norm3
+- decoder.decoders.3.norm1
+- decoder.decoders.3.norm2
+- decoder.decoders.3.norm3
+- decoder.decoders.4.norm1
+- decoder.decoders.4.norm2
+- decoder.decoders.4.norm3
+- decoder.decoders.5.norm1
+- decoder.decoders.5.norm2
+- decoder.decoders.5.norm3
+- decoder.decoders.6.norm1
+- decoder.decoders.6.norm2
+- decoder.decoders.6.norm3
+- decoder.decoders.7.norm1
+- decoder.decoders.7.norm2
+- decoder.decoders.7.norm3
+- decoder.decoders.8.norm1
+- decoder.decoders.8.norm2
+- decoder.decoders.8.norm3
+- decoder.output_layer
+- ctc
+
+use_adapter: true
+
+adapter: bilora
+adapter_conf:
+    rank: 20  
+    target_modules: [
+            "encoder.embed.out.0",
+            "merge_proj",
+            "linear_k",
+            "linear_v",
+            "linear_q",
+            "linear_out",
+            "feed_forward.w_1",
+            "feed_forward.w_2",
+            "feed_forward_macaron.w_1",
+            "feed_forward_macaron.w_2",
+            "channel_proj1.0",
+            "channel_proj2",
+    ]
+    adapt_weight: false
+
+preprocessor: s2t
+preprocessor_conf:
+    text_prev_name: text_prev
+    text_ctc_name: text_ctc
+    fs: 16000
+    na_symbol: "<na>"
+    speech_length: 30
+    speech_resolution: 0.02
+    speech_init_silence: 30
+    text_prev_apply_prob: 0.5
+    time_apply_prob: 0.5
+    notime_symbol: "<notimestamps>"
+    first_time_symbol: "<0.00>"
+    last_time_symbol: "<30.00>"
+
+frontend: default
+frontend_conf:
+    n_fft: 512
+    win_length: 400
+    hop_length: 160
+    fs: 16k
+
+specaug: specaug
+specaug_conf:
+    apply_time_warp: false
+    time_warp_window: 5
+    time_warp_mode: bicubic
+    apply_freq_mask: true
+    freq_mask_width_range:
+    - 0
+    - 27
+    num_freq_mask: 2
+    apply_time_mask: true
+    time_mask_width_ratio_range:
+    - 0.0
+    - 0.05
+    num_time_mask: 4
+
+encoder: e_branchformer
+encoder_conf:
+    output_size: 768
+    attention_heads: 12
+    attention_layer_type: selfattn
+    pos_enc_layer_type: abs_pos
+    rel_pos_type: latest
+    cgmlp_linear_units: 3072
+    cgmlp_conv_kernel: 31
+    use_linear_after_conv: false
+    gate_activation: identity
+    num_blocks: 9
+    dropout_rate: 0.1
+    positional_dropout_rate: 0.1
+    attention_dropout_rate: 0.1
+    input_layer: conv2d
+    layer_drop_rate: 0.0
+    linear_units: 3072
+    positionwise_layer_type: linear
+    use_ffn: true
+    macaron_ffn: true
+    merge_conv_kernel: 31
+
+decoder: transformer
+decoder_conf:
+    attention_heads: 12
+    linear_units: 3072
+    num_blocks: 9
+    dropout_rate: 0.1
+    positional_dropout_rate: 0.1
+    self_attention_dropout_rate: 0.1
+    src_attention_dropout_rate: 0.1
+
+model_conf:
+    ctc_weight: 0.3
+    lsm_weight: 0.1
+    length_normalized_loss: false
+    sym_na: <na>
+
+optim: adamw
+optim_conf:
+    lr: 0.0005
+    betas:
+    - 0.9
+    - 0.98
+    eps: 1.0e-06
+    weight_decay: 0.0
+
+cl_method: finetuning_linear
+
+# 4 GPU/node x 16 nodes = 64
+batch_type: unsorted
+batch_size: 4
+accum_grad: 16
+max_epoch: 20
+patience: none
+init: none
+best_model_criterion:
+-   - valid
+    - acc
+    - max
+-   - valid
+    - total_count
+    - max
+keep_nbest_models: 5
+nbest_averaging_interval: 0  # average ckpt every 5 epochs
+use_amp: true
+num_workers: 3
+unused_parameters: false
+seed: 421
+num_att_plot: 0     # set to 0 due to flash_attn
+sharded_ddp: false
