@@ -167,7 +167,3 @@ where:
 - `list_of_speakers.txt` lists the speakers represented in the split.
 
 The experiment directories also contain the memory-set definitions used by rehearsal-based baselines where applicable.
-
-## License and acknowledgements
-
-This repository contains research code built on top of ESPnet. Please also follow the license and citation requirements of [ESPnet](https://github.com/espnet/espnet) and of the datasets and baseline implementations used in the experiments.
